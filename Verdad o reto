@@ -1,0 +1,118 @@
+import pygame
+import sys
+import random
+
+# Inicialización de Pygame
+pygame.init()
+
+# Configuración de la pantalla
+width, height = 800, 600
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Verdad o Reto")
+
+# Colores
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+
+# Fuentes
+font = pygame.font.Font(None, 22)
+
+# Preguntas de Verdad
+preguntas_verdad = [
+    "¿Con quién pensaste la última vez que te tocaste?",
+    "¿Qué es lo que más te gusta de mí?",
+    "¿Qué es lo que menos te gusta de mí?",
+    "¿Qué parte de mi cuerpo te excita más?",
+    "¿Qué pensaste de mí la primera vez que me viste?",
+    "¿Qué pensaste de nuestro primer beso?",
+    "¿Con qué famoso tendrías sexo?",
+    "¿Qué opinión tienes sobre los disfraces eróticos?",
+    "¿Qué te gustaría que hiciera por ti en la cama?",
+    "¿Te gustaría que tuviéramos más sexo telefónico?",
+    "¿Crees que soy bueno/a en el sexting?",
+    "¿Alguna vez has estado con alguien mucho mayor?",
+    "¿A parte de mí, con quién has tenido mejor sexo en tu vida?",
+    "¿Cuál es la mayor mentira que me has contado?",
+    "¿Te gustaría que te hiciese un striptease?",
+    "¿Alguna vez has sido infiel?",
+    "¿Alguna vez has pensado en ser infiel?",
+    "¿Consideras que soy el amor de tu vida?",
+    "¿Te gustaría casarte?",
+    "¿Te gustaría tener hijos?",
+    "¿Qué es lo más ridículo que has hecho en la cama por alguien?"
+]
+
+# Retos
+retos = [
+    "Da una vuelta en ropa interior por la calle.",
+    "Tírate a la piscina con ropa.",
+    "Sirve las copas de todo el mundo durante toda la noche.",
+    "Haz tantas flexiones como puedas en un minuto.",
+    "No mires el móvil durante dos horas.",
+    "Deja que alguien del grupo lea tus mensajes.",
+    "Publica una foto en la que salgas mal en Instagram.",
+    "Tírale los tejos a un amigo y a ver cómo responde.",
+    "Actúa representando la escena de una película.",
+    "Imita a alguien del grupo.",
+    "Llama a tu última pareja y dile que le echas de menos.",
+    "Cómete un ajo crudo masticándolo.",
+    "Cómete una cucharada de canela.",
+    "Llama a tu madre para decirle que la quieres.",
+    "Manda un mensaje a uno de tus ex insultándolo.",
+    "Dale un beso a la persona de tu derecha.",
+    "Lámele el cuello a una persona del grupo.",
+    "Quítale la camiseta a alguien del grupo.",
+    "Huélele el pie a alguien del grupo.",
+    "Pásale el hielo a alguien del grupo sin utilizar las manos.",
+    "Haz una llamada a un amigo tuyo haciéndote pasar por otra persona.",
+    "Llama a alguien y dile que estás embarazada.",
+    "Llama a tu madre y dile que has dejado embarazada a una chica.",
+    "Acábate todo el vaso de alcohol."
+]
+
+# Jugador
+player_size = 50
+player_x = width // 2 - player_size // 2
+player_y = height // 2 - player_size // 2
+player_speed = 5
+
+# Función para mostrar mensaje (pregunta o reto)
+def mostrar_mensaje(mensaje):
+    text = font.render(mensaje, True, black)
+    screen.blit(text, (width // 2 - text.get_width() // 2, height // 2 - text.get_height() // 2))
+    pygame.display.flip()
+    pygame.time.delay(5000)  # Mostrar el mensaje durante 5 segundos
+
+# Función principal del juego
+def verdad_o_reto():
+    global player_x, player_y
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    # Mostrar verdad o reto al presionar la tecla espacio
+                    mensaje = random.choice(preguntas_verdad + retos)
+                    mostrar_mensaje(mensaje)
+
+        keys = pygame.key.get_pressed()
+        player_x += (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * player_speed
+        player_y += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * player_speed
+
+        # Límites de la pantalla para el jugador
+        player_x = max(0, min(player_x, width - player_size))
+        player_y = max(0, min(player_y, height - player_size))
+
+        # Dibujar jugador
+        screen.fill(white)
+        pygame.draw.rect(screen, black, (player_x, player_y, player_size, player_size))
+
+        # Actualizar la pantalla
+        pygame.display.flip()
+
+# Iniciar el juego
+verdad_o_reto()
